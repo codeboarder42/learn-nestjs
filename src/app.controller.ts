@@ -1,5 +1,6 @@
 import { Body, Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
 import { AppService } from './app.service';
+import { CacheKey, CacheTTL } from '@nestjs/cache-manager';
 
 @Controller()
 export class AppController {
@@ -11,6 +12,8 @@ export class AppController {
     return this.appService.getHello();
   }
 
+  @CacheKey('hello')
+  @CacheTTL(20)
   @Get('hello/:id')
   getCustomHello(): string {
     return this.appService.getCustomHello();

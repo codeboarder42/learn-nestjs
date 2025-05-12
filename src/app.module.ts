@@ -6,6 +6,8 @@ import { DogService } from './dog/dog.service';
 import { BirdModule } from './bird/bird.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
+import { CacheModule } from '@nestjs/cache-manager';
+import { createKeyv } from '@keyv/redis';
 
 @Module({
   imports: [
@@ -19,6 +21,13 @@ import { UserModule } from './user/user.module';
       synchronize: true,
       autoLoadEntities: true,
       migrations: ['../migrations/*.js'],
+    }),
+    CacheModule.registerAsync({
+      useFactory: () => {
+        return {
+          stores: [createKeyv('redis://localhost:6666')],
+        };
+      },
     }),
     UserModule,
   ],
