@@ -1,0 +1,14 @@
+services:
+  db:
+    image: mysql:latest
+    restart: always
+    container_name: learnNestJs-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: learn_nestjs
+      MYSQL_USER: me
+      MYSQL_PASSWORD: me
+    ports:
+      - '3306:3306'
+    volumes:
+      - ../learn_nestjs_data:/var/lib/mysql

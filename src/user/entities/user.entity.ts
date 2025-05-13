@@ -8,10 +8,13 @@ export class User {
 
   @Column()
   firstName: string;
+
   @Column()
   lastName: string;
-  @Column({ default: true })
-  isActive: string;
+
+  @Column({ default: true, type: 'boolean' })
+  isActive: boolean;
+
   @OneToMany(() => Photo, (photo) => photo.user)
   photos: Photo[];
 }

@@ -8,20 +8,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import { createKeyv } from '@keyv/redis';
+import { typeOrmModuleOptions } from './ormconfig';
 
 @Module({
   imports: [
     BirdModule,
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: 'localhost',
-      port: 3306,
-      username: 'root',
-      password: 'root',
-      synchronize: true,
-      autoLoadEntities: true,
-      migrations: ['../migrations/*.js'],
-    }),
+    UserModule,
+    TypeOrmModule.forRoot(typeOrmModuleOptions),
     CacheModule.registerAsync({
       useFactory: () => {
         return {
