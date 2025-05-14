@@ -1,11 +1,19 @@
-import { Controller, Get, HttpException, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  ForbiddenException,
+  Get,
+  UseFilters,
+} from '@nestjs/common';
 import { DogService } from './dog.service';
+import { HttpExceptionFilter } from 'src/error/Filter';
+import { MyException } from 'src/error/MyException';
 
 @Controller('dog')
 export class DogController {
   constructor(private readonly dogService: DogService) {}
   @Get('all')
+  @UseFilters(HttpExceptionFilter)
   findAll(): Promise<string[]> {
-    throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
+    throw new MyException();
   }
 }
