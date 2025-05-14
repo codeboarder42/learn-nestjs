@@ -9,6 +9,8 @@ import { UserModule } from './user/user.module';
 import { CacheModule } from '@nestjs/cache-manager';
 import { createKeyv } from '@keyv/redis';
 import { typeOrmModuleOptions } from './ormconfig';
+import { ConfigModule } from '@nestjs/config';
+import { DogModule } from './dog/dog.module';
 
 @Module({
   imports: [
@@ -22,7 +24,11 @@ import { typeOrmModuleOptions } from './ormconfig';
         };
       },
     }),
-    UserModule,
+    ConfigModule.forRoot({
+      envFilePath: ['.env'],
+      isGlobal: true,
+    }),
+    DogModule,
   ],
   controllers: [AppController, DogController],
   providers: [AppService, DogService],
