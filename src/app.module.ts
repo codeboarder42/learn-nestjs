@@ -11,6 +11,9 @@ import { createKeyv } from '@keyv/redis';
 import { typeOrmModuleOptions } from './ormconfig';
 import { ConfigModule } from '@nestjs/config';
 import { DogModule } from './dog/dog.module';
+import database from './environement/database';
+import payment from './environement/payment';
+import * as Joi from 'joi';
 
 @Module({
   imports: [
@@ -25,8 +28,14 @@ import { DogModule } from './dog/dog.module';
       },
     }),
     ConfigModule.forRoot({
-      envFilePath: ['.env'],
+      load: [database, payment],
       isGlobal: true,
+      cache: true, // Cache the configuration
+      validationSchema: Joi.object({
+        NODE_ENV: Joi.string().valid('local', 'dev', 'prod').default('local'),
+        DATA_BASE_KEY: Joi.string().required(),
+        PORT: Joi.number().default(3000),
+      }),
     }),
     DogModule,
   ],

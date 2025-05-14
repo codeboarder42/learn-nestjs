@@ -10,6 +10,8 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter(),
   );
-  await app.listen(process.env.PORT ?? 3000);
+  app.enableShutdownHooks();
+  const configService = app.get('ConfigService');
+  await app.listen(configService.get('PORT'));
 }
 bootstrap();

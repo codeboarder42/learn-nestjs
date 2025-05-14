@@ -1,23 +1,20 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { ALL_DOG } from './bdd';
 import { ModuleRef } from '@nestjs/core';
-import { ConfigService } from '@nestjs/config';
+import { ConfigType } from '@nestjs/config';
 import { BirdService } from 'src/bird/bird.service';
-
-interface EnvironmentVariables {
-  DATABASE_KEY: string;
-  DATABASE_PORT: number;
-}
+import database from 'src/environement/database';
 
 @Injectable()
 export class DogService {
   constructor(
     private readonly moduleRef: ModuleRef,
-    private configService: ConfigService<EnvironmentVariables>, // ConfigService
+    @Inject(database.KEY)
+    private dbConfig: ConfigType<typeof database>,
   ) {}
   findAll(): Promise<string[]> {
     const birdService = this.moduleRef.create(BirdService);
-    const databaseKey = this.configService.get('DATABASE_KEY', { infer: true });
+    const databaseHost = this.dbConfig.host;
     return Promise.resolve(ALL_DOG);
   }
 }
