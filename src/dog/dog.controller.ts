@@ -2,6 +2,9 @@ import {
   Controller,
   ForbiddenException,
   Get,
+  HttpStatus,
+  Param,
+  ParseIntPipe,
   UseFilters,
 } from '@nestjs/common';
 import { DogService } from './dog.service';
@@ -15,5 +18,25 @@ export class DogController {
   @UseFilters(HttpExceptionFilter)
   findAll(): Promise<string[]> {
     throw new MyException();
+  }
+
+  @Get(':id')
+  findById(@Param('id', ParseIntPipe) id: number): string {
+    console.log(id);
+    return `id: ${id}`;
+  }
+
+  @Get('prime/:id')
+  findByIdPrime(
+    @Param(
+      'id',
+      new ParseIntPipe({
+        errorHttpStatusCode: HttpStatus.FORBIDDEN,
+      }),
+    )
+    id: number,
+  ): string {
+    console.log(id);
+    return `idPrime: ${id}`;
   }
 }

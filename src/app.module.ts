@@ -39,7 +39,7 @@ import * as Joi from 'joi';
     }),
     DogModule,
   ],
-  controllers: [AppController, DogController],
+  controllers: [AppController],
   providers: [AppService, DogService],
 })
 export class AppModule {}
