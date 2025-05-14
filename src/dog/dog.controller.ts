@@ -1,15 +1,20 @@
 import {
+  Body,
   Controller,
-  ForbiddenException,
   Get,
   HttpStatus,
   Param,
   ParseIntPipe,
+  Post,
   UseFilters,
+  UsePipes,
 } from '@nestjs/common';
 import { DogService } from './dog.service';
 import { HttpExceptionFilter } from 'src/error/Filter';
 import { MyException } from 'src/error/MyException';
+import { CreateDogDto } from './CreateDogDto';
+import { FindOneParams } from './FindOneParams';
+import { MyValidationPipe } from 'src/pipe/myValidationPipe';
 
 @Controller('dog')
 export class DogController {
@@ -38,5 +43,19 @@ export class DogController {
   ): string {
     console.log(id);
     return `idPrime: ${id}`;
+  }
+
+  @Get('valid/:id')
+  findValidId(@Param() params: FindOneParams): string {
+    const { id } = params;
+    console.log(id);
+    return `id: ${id}`;
+  }
+
+  @Post('add')
+  @UsePipes(new MyValidationPipe())
+  addDog(@Body() createDogDto: CreateDogDto): string {
+    console.log(createDogDto);
+    return `id: ${createDogDto.name}`;
   }
 }
