@@ -22,7 +22,7 @@ export class DogController {
   @Get('all')
   @UseFilters(HttpExceptionFilter)
   findAll(): Promise<string[]> {
-    throw new MyException();
+    return this.dogService.findAll();
   }
 
   @Get(':id')

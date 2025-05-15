@@ -19,7 +19,7 @@ describe('DogController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
-  describe('findAll', () => { 
-    if()
-   })
+  // describe('findAll', () => {
+  //   if()
+  //  })
 });
