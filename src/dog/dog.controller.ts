@@ -12,12 +12,13 @@ import {
 } from '@nestjs/common';
 import { DogService } from './dog.service';
 import { HttpExceptionFilter } from 'src/error/Filter';
-import { MyException } from 'src/error/MyException';
 import { CreateDogDto } from './CreateDogDto';
 import { FindOneParams } from './FindOneParams';
 import { MyValidationPipe } from 'src/pipe/myValidationPipe';
-import { Roles } from 'src/guards/roles';
+import { Permissions } from 'src/guards/roles';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { Role } from 'src/guards/role.enum';
+import { Claim } from 'src/guards/claim.enum';
 
 @Controller('dog')
 export class DogController {
@@ -55,18 +56,26 @@ export class DogController {
     return `id: ${id}`;
   }
 
-  @Post('add')
-  @Roles(['admin'])
-  @UsePipes(new MyValidationPipe())
-  addDog(@Body() createDogDto: CreateDogDto): string {
-    console.log(createDogDto);
-    return `id: ${createDogDto.name}`;
-  }
+  // @Post('add')
+  // @Roles(Role.Admin)
+  // @UsePipes(new MyValidationPipe())
+  // addDog(@Body() createDogDto: CreateDogDto): string {
+  //   console.log(createDogDto);
+  //   return `id: ${createDogDto.name}`;
+  // }
 
   @Post('add2')
   @UseGuards(AuthGuard)
   @UsePipes(new MyValidationPipe())
   addDog2(@Body() createDogDto: CreateDogDto): string {
+    console.log(createDogDto);
+    return `id: ${createDogDto.name}`;
+  }
+
+  @Post('add3')
+  @Permissions(Claim.READ, Claim.WRITE)
+  @UsePipes(new MyValidationPipe())
+  addDog3(@Body() createDogDto: CreateDogDto): string {
     console.log(createDogDto);
     return `id: ${createDogDto.name}`;
   }

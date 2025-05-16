@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Photo } from './photo.entity';
+import { Role } from 'src/guards/role.enum';
 
 @Entity()
 export class User {
@@ -23,4 +24,6 @@ export class User {
 
   @OneToMany(() => Photo, (photo) => photo.user)
   photos: Photo[];
+
+  roles: Role[];
 }
