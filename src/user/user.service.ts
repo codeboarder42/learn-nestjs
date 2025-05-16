@@ -13,4 +13,17 @@ export class UserService {
   findAll(): Promise<User[]> {
     return this.userRepository.find();
   }
+
+  findOne(userName: string): Promise<User> {
+    const user = {
+      id: 1,
+      username: userName,
+      firstName: 'John',
+      lastName: 'Doe',
+      password: 'password',
+      isActive: true,
+      photos: [],
+    };
+    return Promise.resolve(user);
+  }
 }

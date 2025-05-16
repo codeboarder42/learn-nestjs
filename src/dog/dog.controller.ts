@@ -7,6 +7,7 @@ import {
   ParseIntPipe,
   Post,
   UseFilters,
+  UseGuards,
   UsePipes,
 } from '@nestjs/common';
 import { DogService } from './dog.service';
@@ -15,6 +16,8 @@ import { MyException } from 'src/error/MyException';
 import { CreateDogDto } from './CreateDogDto';
 import { FindOneParams } from './FindOneParams';
 import { MyValidationPipe } from 'src/pipe/myValidationPipe';
+import { Roles } from 'src/guards/roles';
+import { AuthGuard } from 'src/guards/auth.guard';
 
 @Controller('dog')
 export class DogController {
@@ -53,8 +56,17 @@ export class DogController {
   }
 
   @Post('add')
+  @Roles(['admin'])
   @UsePipes(new MyValidationPipe())
   addDog(@Body() createDogDto: CreateDogDto): string {
+    console.log(createDogDto);
+    return `id: ${createDogDto.name}`;
+  }
+
+  @Post('add2')
+  @UseGuards(AuthGuard)
+  @UsePipes(new MyValidationPipe())
+  addDog2(@Body() createDogDto: CreateDogDto): string {
     console.log(createDogDto);
     return `id: ${createDogDto.name}`;
   }

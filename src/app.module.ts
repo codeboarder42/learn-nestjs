@@ -11,6 +11,7 @@ import { createKeyv } from '@keyv/redis';
 import { typeOrmModuleOptions } from './ormconfig';
 import { ConfigModule } from '@nestjs/config';
 import { DogModule } from './dog/dog.module';
+import { AuthModule } from './auth/auth.module';
 import database from './environement/database';
 import payment from './environement/payment';
 import * as Joi from 'joi';
@@ -19,6 +20,7 @@ import * as Joi from 'joi';
   imports: [
     BirdModule,
     UserModule,
+    AuthModule,
     TypeOrmModule.forRoot(typeOrmModuleOptions),
     CacheModule.registerAsync({
       useFactory: () => {
@@ -38,6 +40,7 @@ import * as Joi from 'joi';
       }),
     }),
     DogModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService, DogService],
